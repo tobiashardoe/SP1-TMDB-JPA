@@ -1,5 +1,7 @@
 package app.service;
 
+import app.DTOs.ActorDTO;
+import app.DTOs.DirectorDTO;
 import app.DTOs.GenreDTO;
 import app.DTOs.TmdbMovieDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,13 +30,22 @@ public class TMDBReader {
     public static void main(String[] args) {
         TMDBReader reader = new TMDBReader();
         String json = reader.readAPI(reader.genreUrl);
+
+
         GenreListDTO genreListDTO = reader.convertFromJson(json);
-        System.out.println(genreListDTO);
+       // System.out.println(genreListDTO);
+
+
+
 
         //Ændre movieID fra 550 til noget andet, hvis du gerne vil have oplysningerne på en anden film
         TmdbMovieDTO movie = reader.getMovieById(550);
         System.out.println(movie);
 
+
+        //Test vores Actors og Directors
+        CreditsDTO credits = reader.getCredits(550);
+        System.out.println(credits);
     }
 
     public String readAPI(String url) {
@@ -76,7 +87,27 @@ public class TMDBReader {
         }
     }
 
+    public CreditsDTO getCredits(int movieId) {
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=" + apiKey;
+        String json = readAPI(url);
+        try {
+            return objectMapper.readValue(json, CreditsDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @ToString
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class CreditsDTO {
+        @JsonProperty("cast")
+        List<ActorDTO> cast;
+        @JsonProperty("crew")
+        List<DirectorDTO> crew;
+    }
     @Getter
     @Setter
     @NoArgsConstructor
