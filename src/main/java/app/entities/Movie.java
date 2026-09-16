@@ -21,7 +21,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "tmdb_id", unique = true, nullable = false)
+    @Column(name = "tmdb_id", unique = true)
     private Long tmdbId;
 
     private String title;
@@ -34,6 +34,8 @@ public class Movie {
     private double rating;
 
     private int voteCount;
+
+    private double popularity;
 
 
     @ToString.Exclude

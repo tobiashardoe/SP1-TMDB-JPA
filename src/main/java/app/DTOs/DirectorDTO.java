@@ -11,4 +11,5 @@ import lombok.*;
 public class DirectorDTO {
     private int id;
     private String name;
+    private String job;
 }

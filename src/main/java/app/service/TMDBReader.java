@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static app.utils.Utils.getPropertyValue;
@@ -79,6 +81,31 @@ public class TMDBReader {
         }
     }
 
+    public DiscoverDTO getDanishMovies(int page, LocalDate start, LocalDate end) {
+        String url = "https://api.themoviedb.org/3/discover/movie?with_origin_country=DK"
+                + "&primary_release_date.gte=" + start
+                + "&primary_release_date.lte=" + end
+                + "&sort_by=primary_release_date.asc&page=" + page
+                + "&api_key=" + apiKey;
+        try {
+            return objectMapper.readValue(readAPI(url), DiscoverDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<TmdbMovieDTO> getRecentDanishMovies(LocalDate start, LocalDate end) {
+        DiscoverDTO firstPage = getDanishMovies(1, start, end);
+        List<TmdbMovieDTO> movies = new ArrayList<>(firstPage.getResults());
+        System.out.printf("Reading TMDb pages: 1/%d%n", firstPage.getTotalPages());
+
+        for (int page = 2; page <= firstPage.getTotalPages(); page++) {
+            movies.addAll(getDanishMovies(page, start, end).getResults());
+            System.out.printf("Reading TMDb pages: %d/%d%n", page, firstPage.getTotalPages());
+        }
+        return movies;
+    }
+
     public GenreListDTO convertFromJson(String json) {
         try {
             return objectMapper.readValue(json, GenreListDTO.class);
@@ -102,11 +129,20 @@ public class TMDBReader {
     @NoArgsConstructor
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class CreditsDTO {
+    public static class CreditsDTO {
         @JsonProperty("cast")
         List<ActorDTO> cast;
         @JsonProperty("crew")
         List<DirectorDTO> crew;
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class DiscoverDTO {
+        private List<TmdbMovieDTO> results;
+        @JsonProperty("total_pages")
+        private int totalPages;
     }
     @Getter
     @Setter

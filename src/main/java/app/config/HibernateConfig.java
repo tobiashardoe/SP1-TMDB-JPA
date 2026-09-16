@@ -25,8 +25,7 @@ public final class HibernateConfig {
     private static Properties buildProps() {
         Properties props = HibernateBaseProperties.createBase();
 
-        // Teaching-friendly default - change to update in production
-        props.put("hibernate.hbm2ddl.auto", "create");
+        props.put("hibernate.hbm2ddl.auto", "update");
 
         if (System.getenv("DEPLOYED") != null) {
             setDeployedProperties(props);
@@ -52,4 +51,5 @@ public final class HibernateConfig {
         props.put("hibernate.connection.username", username);
         props.put("hibernate.connection.password", password);
     }
+
 }

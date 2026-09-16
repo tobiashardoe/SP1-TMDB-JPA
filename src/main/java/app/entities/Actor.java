@@ -18,6 +18,8 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private Long tmdbId;
     private String fullName;
 
     @ManyToMany(mappedBy = "actors")
