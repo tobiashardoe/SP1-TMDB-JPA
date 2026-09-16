@@ -21,6 +21,9 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "tmdb_id", unique = true, nullable = false)
+    private Long tmdbId;
+
     private String title;
 
     private LocalDate releaseDate;
@@ -31,6 +34,7 @@ public class Movie {
     private double rating;
 
     private int voteCount;
+
 
     @ToString.Exclude
     @ManyToMany
@@ -59,45 +63,4 @@ public class Movie {
     )
     private Set<Director> directors = new HashSet<>();
 
-    public void addActor(Actor actor) {
-        if (actor != null) {
-            actors.add(actor);
-            actor.getMovies().add(this);
-        }
-    }
-
-    public void removeActor(Actor actor) {
-        if (actor != null) {
-            actors.remove(actor);
-            actor.getMovies().remove(this);
-        }
-    }
-
-    public void addGenre(Genre genre) {
-        if (genre != null) {
-            genres.add(genre);
-            genre.getMovies().add(this);
-        }
-    }
-
-    public void removeGenre(Genre genre) {
-        if (genre != null) {
-            genres.remove(genre);
-            genre.getMovies().remove(this);
-        }
-    }
-
-    public void addDirector(Director director) {
-        if (director != null) {
-            directors.add(director);
-            director.getMovies().add(this);
-        }
-    }
-
-    public void removeDirector(Director director) {
-        if (director != null) {
-            directors.remove(director);
-            director.getMovies().remove(this);
-        }
-    }
 }
