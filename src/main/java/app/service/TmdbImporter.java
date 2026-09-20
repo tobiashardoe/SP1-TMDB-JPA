@@ -12,7 +12,7 @@ import app.entities.Movie;
 
 import java.time.LocalDate;
 
-/** Converts TMDb DTOs to entities, then asks MovieDAO to store them. */
+// Konverterer TMDb-DTO'er til entiteter og beder derefter MovieDAO om at gemme dem. //
 public class TmdbImporter {
     private final TMDBReader reader = new TMDBReader();
     private final MovieDAO movieDAO;
@@ -37,13 +37,13 @@ public class TmdbImporter {
                     || details.getReleaseDate().isAfter(end)) continue;
 
             TMDBReader.CreditsDTO credits = reader.getCredits(summary.getId());
-            Movie movie = toEntity(details, credits);
+            Movie movie = convertToEntity(details, credits);
             if (movieDAO.createImported(movie)) imported++;
         }
         return imported;
     }
 
-    private Movie toEntity(TmdbMovieDTO dto, TMDBReader.CreditsDTO credits) {
+    public static Movie convertToEntity(TmdbMovieDTO dto, TMDBReader.CreditsDTO credits) {
         Movie movie = new Movie();
         movie.setTmdbId((long) dto.getId());
         movie.setTitle(dto.getTitle());

@@ -12,8 +12,8 @@ public class Main {
         try (var emf = HibernateConfig.getEntityManagerFactory()) {
             MovieDAO movieDAO = new MovieDAO(emf);
 
-            // Set this to true once to fill the database, then set it back to false.
-            boolean importMovies = true;
+            // Sæt det til true en gang for at fylde databasen, og sæt det derefter tilbage til false.
+            boolean importMovies = false;
             if (importMovies) {
                 int imported = new TmdbImporter(movieDAO).importRecentDanishMovies();
                 System.out.println("Imported movies: " + imported);

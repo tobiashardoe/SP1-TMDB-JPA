@@ -2,6 +2,8 @@ package app.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +16,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString
 public class Movie {
 
@@ -45,6 +49,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
+    @Builder.Default
     private Set<Actor> actors = new HashSet<>();
 
     @ToString.Exclude
@@ -54,6 +59,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
+    @Builder.Default
     private Set<Genre> genres = new HashSet<>();
 
     @ToString.Exclude
@@ -63,6 +69,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "director_id")
     )
+    @Builder.Default
     private Set<Director> directors = new HashSet<>();
 
 }

@@ -1,23 +1,36 @@
 # SP1-TMDB-JPA
 
-This is a small JPA backend for recent Danish movies from TMDb. `TMDBReader` reads
-TMDb JSON into DTOs, `TmdbImporter` converts DTOs to entities, and the DAOs read
-and write the PostgreSQL database. Importing is a one-time step; later database
-queries do not call TMDb.
+Importen skal kun køres én gang. Efter importen hentes alle data direkte fra
+vores egen database.
 
-## Run it
+## Sådan køres projektet
 
-1. Create a PostgreSQL database and set `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD`,
-   and `TMDB_API_KEY` in `src/main/resources/config.properties`.
-2. In `Main`, set `importMovies` to `true` and run it once. Set it back to `false`
-   for normal runs. Hibernate keeps the tables between runs.
-3. Use `MovieDAO`, `ActorDAO`, `DirectorDAO`, and `GenreDAO` to work with the stored data.
+1. Opret en PostgreSQL-database.
+2. Indsæt `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` og `TMDB_API_KEY` i
+   `src/main/resources/config.properties`.
+3. Sæt `importMovies` til `true` i `Main`, og kør programmet én gang for at
+   hente film fra TMDb.
+4. Sæt derefter `importMovies` tilbage til `false` ved normale kørsler.
 
-`MovieDAO` provides movie CRUD, case-insensitive title search, movies by genre,
-average rating, and the top 10 highest rated, lowest rated, and most popular movies.
-The people and genre DAOs provide lists of their entities. Movies have many-to-many
-relationships with actors, directors, and genres because each can belong to more
-than one movie. TMDb IDs let the import reuse the same person or genre across movies.
 
-`MovieDAOTest` contains a PostgreSQL Testcontainers test for the main database
-operations.
+## Data i databasen
+
+Databasen indeholder i øjeblikket:
+
+- 1.524 film
+- 4.417 actors
+- 1.067 directors
+- 19 genres
+
+## Tests
+
+Start Docker Desktop, og kør:
+
+Seneste testresultat:
+
+```text
+Tests run: 13
+Failures: 0
+Errors: 0
+Skipped: 0
+```
