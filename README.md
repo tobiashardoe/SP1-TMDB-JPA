@@ -1,7 +1,10 @@
 # Gruppe og mails
 Seif Ahmad - cph-sa560@stud.ek.dk
+
 Nana Yaw - cph-na289@stud.ek.dk
+
 Tobias Hardø - cph-th464@stud.ek.dk
+
 Emil Ozel - cph-eo97@stud.ek.dk
 
 # SP1-TMDB-JPA
